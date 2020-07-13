@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lolinfo/Home.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:lolinfo/MatchInfo.dart';
 
 void main() async {
   await DotEnv().load('.env');

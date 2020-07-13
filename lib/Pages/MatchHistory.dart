@@ -4,7 +4,7 @@ import 'package:lolinfo/Models/PastMatch.dart';
 import 'package:lolinfo/Models/Summoner.dart';
 import 'package:lolinfo/Networking/DDragonService.dart';
 import 'package:lolinfo/Networking/RiotService.dart';
-import 'package:lolinfo/MatchInfo.dart';
+import 'package:lolinfo/Pages/MatchInfo.dart';
 
 class MatchHistory extends StatefulWidget {
   MatchHistory({Key key}) :
@@ -37,7 +37,10 @@ class _MatchHistoryState extends State<MatchHistory> {
 
         return SlideTransition(
           position: tween.animate(curvedAnimation),
-          child: child,
+          child: FadeTransition(
+            opacity: animation,
+            child: child,
+          ),
         );
       }
     );

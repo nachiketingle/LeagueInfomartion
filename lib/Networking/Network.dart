@@ -16,12 +16,12 @@ class Network with Constants{
     return response.body;
   }
 
-  static Future<dynamic> getDDragon(String type, String query) async {
+  static Future<dynamic> getDDragon(String type, String query, {bool patch : true}) async {
     Map<String, String> headers = Map();
     headers['Content-Type'] = 'application/json';
     if(query == null)
       return null;
-    String url = Constants.ddragonURL + type + query;
+    String url = patch ? (Constants.ddragonURLPatch + type + query) : (Constants.ddragonURL + type + query);
     print(url);
     var response = await http.get(url, headers: headers);
     printResponse('GET', response.body, response.statusCode.toString());

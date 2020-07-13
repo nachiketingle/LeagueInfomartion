@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:lolinfo/Models/Champion.dart';
 
 import 'MatchParticipant.dart';

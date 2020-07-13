@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'Models/PastMatch.dart';
-import 'Models/LiveMatch.dart';
-import 'Networking/DDragonService.dart';
+import 'package:lolinfo/Models/PastMatch.dart';
+import '../Networking/DDragonService.dart';
 
 class MatchInfo extends StatefulWidget {
   MatchInfo({Key key, @required this.match}) :

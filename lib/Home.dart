@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lolinfo/MatchHistory.dart';
-import 'package:lolinfo/SummonerInfo.dart';
-import 'package:lolinfo/SummonerList.dart';
-import 'LiveMatchPage.dart';
+import 'package:lolinfo/Pages/AllPages.dart';
+import 'dart:core';
 
 class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
@@ -21,11 +19,18 @@ class _HomeState extends State<Home> {
   ];
 
   void _onTappedItem(int index) {
-
-    setState(() {
-      _selectedIndex = index;
-    });
-    _pageController.animateToPage(_selectedIndex, duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
+    if((index - _selectedIndex).abs() == 1) {
+      setState(() {
+        _selectedIndex = index;
+      });
+      _pageController.animateToPage(_selectedIndex, duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
+    }
+    else {
+      setState(() {
+        _selectedIndex = index;
+      });
+      _pageController.jumpToPage(_selectedIndex);
+    }
   }
 
   @override
@@ -44,9 +49,9 @@ class _HomeState extends State<Home> {
           children: bodies,
           controller: _pageController,
           onPageChanged: (index) {
-            setState(() {
+            //setState(() {
               _selectedIndex = index;
-            });
+            //});
           },
         ),
       ),

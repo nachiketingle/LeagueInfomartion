@@ -25,7 +25,7 @@ class _LiveMatchPageState extends State<LiveMatchPage> {
         child: FutureBuilder(
           future: getLiveMatch(),
           builder: (context, snapshot) {
-            if(snapshot.hasData && snapshot.data != null) {
+            if(snapshot.hasData) {
               LiveMatch match = snapshot.data;
               return ListView.builder(
                 itemCount: match.blueSide.length,
@@ -36,6 +36,9 @@ class _LiveMatchPageState extends State<LiveMatchPage> {
                   );
                 },
               );
+            }
+            else if(snapshot.connectionState == ConnectionState.done) {
+              return Text("Live Match not Found");
             }
             else {
               return CircularProgressIndicator();

@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:lolinfo/Networking/DDragonService.dart';
 
 class Champion {
   int id;
