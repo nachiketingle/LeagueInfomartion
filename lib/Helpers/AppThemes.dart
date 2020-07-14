@@ -18,7 +18,7 @@ class AppThemes {
   static TextStyle subheaderTitleStyle() {
     return TextStyle(
       fontSize: 15,
-      color: Colors.grey
+      color: Colors.white
     );
   }
 

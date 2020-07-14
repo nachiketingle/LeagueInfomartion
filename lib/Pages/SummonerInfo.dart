@@ -8,14 +8,12 @@ import 'package:lolinfo/Networking/RiotService.dart';
 import '../Models/Summoner.dart';
 
 class SummonerInfo extends StatefulWidget {
-  SummonerInfo({Key key}) :
-        super(key: key);
+  SummonerInfo({Key key}) : super(key: key);
 
   _SummonerInfoState createState() => _SummonerInfoState();
 }
 
 class _SummonerInfoState extends State<SummonerInfo> {
-
   Summoner _displaySummoner;
   List<int> _keys;
   Map<int, ChampionMastery> _allChamps = Map();
@@ -25,15 +23,17 @@ class _SummonerInfoState extends State<SummonerInfo> {
   }
 
   Future<bool> _getDisplayInfo() async {
-    if(_keys != null) {
+    if (_keys != null) {
       return true;
     }
     _displaySummoner = Summoner.selected;
-    List<ChampionMastery> _list = await RiotService.getChampionMasteries(_displaySummoner.id).catchError((onError) {
+    List<ChampionMastery> _list =
+        await RiotService.getChampionMasteries(_displaySummoner.id)
+            .catchError((onError) {
       return false;
     });
     _allChamps.clear();
-    for(ChampionMastery mastery in _list) {
+    for (ChampionMastery mastery in _list) {
       _allChamps[mastery.champId] = mastery;
     }
 
@@ -46,33 +46,29 @@ class _SummonerInfoState extends State<SummonerInfo> {
     return FutureBuilder(
       future: _getDisplayInfo(),
       builder: (context, snapshot) {
-        if(snapshot.hasData && snapshot.data == true) {
+        if (snapshot.hasData && snapshot.data == true) {
           return Center(
               child: Column(
-                children: [
-                  Flexible(
-                    flex: 1,
-                    child: Header(displaySummoner: _displaySummoner),
-                  ),
-                  Flexible(
-                    flex: 5,
-                    child: CustomDataTable(champMap: _allChamps),
-                  ),
-                ],
-              )
-          );
-        }
-        else {
+            children: [
+              Flexible(
+                flex: 1,
+                child: Header(displaySummoner: _displaySummoner),
+              ),
+              Flexible(
+                flex: 5,
+                child: CustomDataTable(champMap: _allChamps),
+              ),
+            ],
+          ));
+        } else {
           return Center(child: CircularProgressIndicator());
         }
       },
     );
-
   }
 }
 
 class Header extends StatelessWidget {
-
   Header({@required this.displaySummoner});
 
   final Summoner displaySummoner;
@@ -106,28 +102,21 @@ class Header extends StatelessWidget {
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                      image: displaySummoner.profileIcon.image
-                  )
-              ),
-            )
-        ),
+                      image: displaySummoner.profileIcon.image)),
+            )),
       ],
     );
-
   }
 }
 
 class CustomDataTable extends StatefulWidget {
-  CustomDataTable({Key key, @required this.champMap}):
-        super(key: key);
+  CustomDataTable({Key key, @required this.champMap}) : super(key: key);
   final Map champMap;
 
   _CustomDataTableState createState() => _CustomDataTableState();
-
 }
 
 class _CustomDataTableState extends State<CustomDataTable> {
-
   List<int> _keys;
   Map<int, ChampionMastery> champMap;
   bool _nameSort = false;
@@ -145,19 +134,17 @@ class _CustomDataTableState extends State<CustomDataTable> {
   }
 
   void _sortNames() {
-    if(!_nameSort) {
+    if (!_nameSort) {
       _nameSort = true;
       _pointSort = false;
-    }
-    else {
+    } else {
       _nameAscending = !_nameAscending;
     }
 
     _keys.sort((a, b) {
-      if(_nameAscending) {
+      if (_nameAscending) {
         return champMap[a].champ.name.compareTo(champMap[b].champ.name);
-      }
-      else {
+      } else {
         return champMap[b].champ.name.compareTo(champMap[a].champ.name);
       }
     });
@@ -166,19 +153,17 @@ class _CustomDataTableState extends State<CustomDataTable> {
   }
 
   void _sortPoints() {
-    if(!_pointSort) {
+    if (!_pointSort) {
       _pointSort = true;
       _nameSort = false;
-    }
-    else {
+    } else {
       _pointAscending = !_pointAscending;
     }
 
     _keys.sort((a, b) {
-      if(_pointAscending) {
+      if (_pointAscending) {
         return champMap[a].champPoints.compareTo(champMap[b].champPoints);
-      }
-      else {
+      } else {
         return champMap[b].champPoints.compareTo(champMap[a].champPoints);
       }
     });
@@ -188,7 +173,6 @@ class _CustomDataTableState extends State<CustomDataTable> {
 
   @override
   Widget build(BuildContext context) {
-
     return Padding(
       padding: const EdgeInsets.only(left: 8.0, right: 8.0),
       child: Column(
@@ -205,14 +189,15 @@ class _CustomDataTableState extends State<CustomDataTable> {
                     child: Row(
                       children: <Widget>[
                         Text("Name"),
-                        _nameSort ?
-                        Icon(_nameAscending ? Icons.arrow_upward : Icons.arrow_downward)
+                        _nameSort
+                            ? Icon(_nameAscending
+                                ? Icons.arrow_upward
+                                : Icons.arrow_downward)
                             : Container()
                       ],
                     ),
                   ),
                 ),
-
                 InkWell(
                   onTap: _sortPoints,
                   child: FractionallySizedBox(
@@ -220,14 +205,15 @@ class _CustomDataTableState extends State<CustomDataTable> {
                     child: Row(
                       children: <Widget>[
                         Text("Points"),
-                        _pointSort ?
-                        Icon(_pointAscending ? Icons.arrow_upward : Icons.arrow_downward)
+                        _pointSort
+                            ? Icon(_pointAscending
+                                ? Icons.arrow_upward
+                                : Icons.arrow_downward)
                             : Container()
                       ],
                     ),
                   ),
                 ),
-
               ],
             ),
           ),
@@ -235,9 +221,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
             child: ListView.builder(
               itemCount: widget.champMap.length,
               itemBuilder: (context, index) {
-                return ChampTile(
-                    champMastery: champMap[_keys[index]]
-                );
+                return ChampTile(champMastery: champMap[_keys[index]]);
               },
             ),
           ),
@@ -245,13 +229,10 @@ class _CustomDataTableState extends State<CustomDataTable> {
       ),
     );
   }
-
 }
 
 class ChampTile extends StatelessWidget {
-
-  ChampTile({Key key, @required this.champMastery}) :
-        super(key: key);
+  ChampTile({Key key, @required this.champMastery}) : super(key: key);
   ChampionMastery champMastery;
 
   @override
@@ -271,17 +252,23 @@ class ChampTile extends StatelessWidget {
                 DDragonService.getChampIcon(champMastery.champ.name),
                 Column(
                   children: <Widget>[
-                    Expanded(child: DDragonService.getMasteryIcon(champMastery.champLevel)),
-                    Text(champMastery.champPoints.toString(), style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),),
+                    Expanded(
+                        child: DDragonService.getMasteryIcon(
+                            champMastery.champLevel)),
+                    Text(
+                      champMastery.champPoints.toString(),
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
                   ],
                 ),
               ],
             ),
-
           ],
         ),
       ),
     );
   }
-
 }

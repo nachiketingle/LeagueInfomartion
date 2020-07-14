@@ -45,17 +45,33 @@ class _HomeState extends State<Home> {
 
     return Scaffold(
       body: SafeArea(
-        child: PageView(
-          children: bodies,
-          controller: _pageController,
-          onPageChanged: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          },
+        child: Stack(
+          children: <Widget>[
+            Opacity(
+          opacity: 0.75,
+          child: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [Colors.blue, Colors.red]),
+                  ),
+          ),
+        ),
+            PageView(
+              children: bodies,
+              controller: _pageController,
+              onPageChanged: (index) {
+                setState(() {
+                  _selectedIndex = index;
+                });
+              },
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.purple,
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.red,
         unselectedItemColor: Colors.blue,
