@@ -260,22 +260,15 @@ class ChampTile extends StatelessWidget {
       padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: Container(
         width: MediaQuery.of(context).size.height * 0.9,
-        height: MediaQuery.of(context).size.height * 0.1,
+        height: MediaQuery.of(context).size.height * 0.11,
         child: Stack(
           fit: StackFit.passthrough,
           children: <Widget>[
-            FittedBox(
-              fit: BoxFit.fill,
-              child: Opacity(
-                opacity: 0.5,
-                child: DDragonService.getSplashArt(champMastery.champ.name),
-              ),
-            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Container(),
-                //DDragonService.getChampIcon(champMastery.champ.name),
+                //Container(),
+                DDragonService.getChampIcon(champMastery.champ.name),
                 Column(
                   children: <Widget>[
                     Expanded(child: DDragonService.getMasteryIcon(champMastery.champLevel)),

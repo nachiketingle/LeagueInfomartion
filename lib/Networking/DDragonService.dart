@@ -6,9 +6,8 @@ import 'package:lolinfo/Models/Champion.dart';
 import 'package:lolinfo/Networking/Network.dart';
 
 class DDragonService {
-
   static Map<int, Champion> _allChamps = Map(); //champion.json
-
+  static Map<String, Widget> _assets = Map();
 
   static Image getProfileImage(int id) {
     return Image.network(
@@ -16,7 +15,8 @@ class DDragonService {
     );
   }
 
-  static Image getChampIcon(String name, {double imageWidth: null, double imageHeight: null}) {
+  static Image getChampIcon(String name,
+      {double imageWidth: null, double imageHeight: null}) {
     return Image.network(
       Constants.ddragonURLPatch + "img/champion/" + name + ".png",
       width: imageWidth,
@@ -25,7 +25,7 @@ class DDragonService {
   }
 
   static Future<Map<int, Champion>> getAllChampions() async {
-    if(_allChamps.isNotEmpty) {
+    if (_allChamps.isNotEmpty) {
       return _allChamps;
     }
     print("Pulling All champs from network");
@@ -43,26 +43,55 @@ class DDragonService {
     return _finalList;
   }
 
-  static Image getMasteryIcon(int masteryLevel, {double imageWidth: null, double imageHeight: null}) {
+  static Image getMasteryIcon(int masteryLevel,
+      {double imageWidth: null, double imageHeight: null}) {
     String val = masteryLevel.toString();
-    if(masteryLevel <= 3) {
+    if (masteryLevel <= 3) {
       val = "default";
     }
 
-    return Image.network(
-      Constants.rawDDragonAssetsURL + "ux/mastery/mastery_icon_" + val + ".png",
-      width: imageWidth,
-      height: imageHeight,
-    );
+    Image image;
+    String url = Constants.rawDDragonAssetsURL +
+        "ux/mastery/mastery_icon_" +
+        val +
+        ".png";
+
+    if (imageWidth == null && imageHeight == null) {
+      if (_assets.containsKey(url)) {
+        image = _assets[url];
+      } else {
+        image = Image.network(url);
+        _assets[url] = image;
+      }
+    } else {
+      image = Image.network(
+        url,
+        width: imageWidth,
+        height: imageHeight,
+      );
+    }
+    return image;
   }
 
-  static Image getSplashArt(String name, {double imageWidth: null, double imageHeight: null}) {
-    return Image.network(
-      Constants.ddragonURL + "img/champion/splash/" + name + "_0.jpg",
-      width: imageWidth,
-      height: imageHeight,
-    );
-  }
+  static Image getSplashArt(String name,
+      {double imageWidth: null, double imageHeight: null}) {
+        Image image;
+        String url = Constants.ddragonURL + "img/champion/splash/" + name + "_0.jpg";
 
+    if (imageWidth == null && imageHeight == null) {
+      if (_assets.containsKey(url)) {
+        image = _assets[url];
+      } else {
+        image = Image.network(url);
+        _assets[url] = image;
+      }
+    } else {
+      image = Image.network(
+        url,
+        width: imageWidth,
+        height: imageHeight,
+      );
+    }
+    return image;
+  }
 }
-

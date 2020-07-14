@@ -49,9 +49,9 @@ class _HomeState extends State<Home> {
           children: bodies,
           controller: _pageController,
           onPageChanged: (index) {
-            //setState(() {
+            setState(() {
               _selectedIndex = index;
-            //});
+            });
           },
         ),
       ),

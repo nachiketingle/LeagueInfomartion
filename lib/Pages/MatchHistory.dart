@@ -5,6 +5,7 @@ import 'package:lolinfo/Models/Summoner.dart';
 import 'package:lolinfo/Networking/DDragonService.dart';
 import 'package:lolinfo/Networking/RiotService.dart';
 import 'package:lolinfo/Pages/MatchInfo.dart';
+import 'package:lolinfo/Animations/PageTransitions.dart';
 
 class MatchHistory extends StatefulWidget {
   MatchHistory({Key key}) :
@@ -21,30 +22,6 @@ class _MatchHistoryState extends State<MatchHistory> {
     return await RiotService.getMatchHistory(Summoner.selected.accountId);
   }
   
-  Route _createRoute(PastMatch match) {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => MatchInfo(match: match,),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        Offset begin = Offset(0.0, 1.0);
-        Offset end = Offset.zero;
-        Curve curve = Curves.easeInOut;
-        Tween tween = Tween<Offset>(begin: begin, end: end);
-        var offsetAnimation = animation.drive(tween);
-        var curvedAnimation = CurvedAnimation(
-          parent: animation,
-          curve: curve,
-        );
-
-        return SlideTransition(
-          position: tween.animate(curvedAnimation),
-          child: FadeTransition(
-            opacity: animation,
-            child: child,
-          ),
-        );
-      }
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +42,7 @@ class _MatchHistoryState extends State<MatchHistory> {
                   child: FlatButton(
                     onPressed: () {
                       // TODO: Display match info
-                      Navigator.of(context).push(_createRoute(currMatch));
+                      Navigator.of(context).push(FadePageTransition(page: MatchInfo(match: currMatch,)));
                     },
                     child: Container(
                       child: Padding(
