@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:lolinfo/Networking/DDragonService.dart';
 import 'package:lolinfo/Pages/AllPages.dart';
 import 'dart:core';
+
+import 'package:lolinfo/Pages/Settings.dart';
 
 class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
@@ -15,7 +18,8 @@ class _HomeState extends State<Home> {
     SummonerList(key: _summonerListKey,),
     SummonerInfo(),
     MatchHistory(),
-    LiveMatchPage()
+    LiveMatchPage(),
+    SettingsPage(),
   ];
 
   void _onTappedItem(int index) {
@@ -38,6 +42,9 @@ class _HomeState extends State<Home> {
     super.initState();
     _selectedIndex = 0;
     _pageController = PageController(initialPage: _selectedIndex);
+
+    // Initializes the list
+    DDragonService.getAllChampions();
   }
 
   @override
@@ -91,6 +98,10 @@ class _HomeState extends State<Home> {
           BottomNavigationBarItem(
               icon: Icon(Icons.live_help),
               title: Text("Live Match")
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              title: Text("Settings")
           ),
         ],
       ),
