@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lolinfo/Home.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 
 void main() async {
-  await DotEnv().load('.env');
+  await DotEnv.load();
   runApp(MyApp());
 }
 

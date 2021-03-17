@@ -3,27 +3,30 @@ import '../Helpers/Constants.dart';
 class Network with Constants{
 
 
-  static Future<dynamic> get(String type, Map<String, String> queries) async {
+  static Future<dynamic> get(String type, Map<String, String>? queries) async {
     Map<String, String> headers = Map();
     headers['Content-Type'] = 'application/json';
     if(queries == null)
       queries = Map();
     queries['api_key'] = Constants.API_KEY;
-    String url = Constants.baseURL + type + convertQueryToString(queries);
-    print(url);
-    var response = await http.get(url, headers: headers);
+    String path = type;//+ convertQueryToString(queries);
+    print(path);
+    Uri uri = Uri.https(Constants.baseURL, path, queries);
+    print(uri.toString());
+    var response = await http.get(uri, headers: headers);
     printResponse('GET', response.body, response.statusCode.toString());
     return response.body;
   }
 
-  static Future<dynamic> getDDragon(String type, String query, {bool patch : true}) async {
+  static Future<dynamic> getDDragon(String type, String query, {bool patch: true}) async {
     Map<String, String> headers = Map();
     headers['Content-Type'] = 'application/json';
     if(query == null)
       return null;
-    String url = patch ? (Constants.ddragonURLPatch + type + query) : (Constants.ddragonURL + type + query);
-    print(url);
-    var response = await http.get(url, headers: headers);
+    String path = (patch ? Constants.patch : "") + type + query;
+    Uri uri = Uri.https(Constants.ddragonHost, path);
+    print(uri.toString());
+    var response = await http.get(uri, headers: headers);
     printResponse('GET', response.body, response.statusCode.toString());
     return response.body;
   }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class CircularImage extends StatelessWidget {
 
-  CircularImage({@required this.image, @required this.diameter});
+  CircularImage({required this.image, required this.diameter});
 
   final double diameter;
   final Image image;

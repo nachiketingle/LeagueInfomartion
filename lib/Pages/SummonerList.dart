@@ -7,7 +7,7 @@ import 'package:lolinfo/Networking/RiotService.dart';
 import 'package:lolinfo/CustomWidgets/ImageHolders.dart';
 
 class SummonerList extends StatefulWidget {
-  SummonerList({Key key}) :
+  SummonerList({Key? key}) :
         super(key: key);
 
   _SummonerListState createState() => _SummonerListState();
@@ -18,7 +18,7 @@ class _SummonerListState extends State<SummonerList> {
   TextEditingController _summonerNameController = TextEditingController();
   static Map<String, Summoner> _summonerList = Map();
   final double _sidePadding = 50;
-  FocusNode myFocusNode;
+  FocusNode myFocusNode = FocusNode();
   final GlobalKey<AnimatedListState> _animatedListKey = GlobalKey<AnimatedListState>();
 
   /// Add a new summoner name
@@ -26,14 +26,14 @@ class _SummonerListState extends State<SummonerList> {
     print(_summonerList.length);
 
     if(_summonerList.length > 10) {
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Too many Summoners. Delete some to add more"),
       ));
       return;
     }
     RiotService.getSummonerInfo(_summonerNameController.text.trim()).then((summoner) {
       if(summoner == null) {
-        Scaffold.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text("Unable to get Summoner"),
         ));
         return;
@@ -51,14 +51,14 @@ class _SummonerListState extends State<SummonerList> {
         //setState(() {
         _summonerList[summoner.puuid] = summoner;
         List<String> _keys = _getSortedKeys();
-        _animatedListKey.currentState.insertItem(_keys.indexOf(summoner.puuid));
+        _animatedListKey.currentState!.insertItem(_keys.indexOf(summoner.puuid));
         //});
         DeviceInfo.loadSharedPreferences().then((value) {
           value.setStringList("puuid", _summonerList.keys.toList());
         });
       }
       else {
-        Scaffold.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text("Already have Summoner"),
         ));
       }
@@ -109,7 +109,7 @@ class _SummonerListState extends State<SummonerList> {
                 _updateSelectedSummoner(null);
               }
 
-              _animatedListKey.currentState.removeItem(index, (context, animation) {
+              _animatedListKey.currentState!.removeItem(index, (context, animation) {
                 return PlaceholderCard(height: MediaQuery.of(context).size.height * 0.1, animation: animation,);
               },
               duration: Duration(milliseconds: 250));
@@ -126,9 +126,9 @@ class _SummonerListState extends State<SummonerList> {
   }
 
   /// Update selected user
-  void _updateSelectedSummoner(Summoner selected) {
+  void _updateSelectedSummoner(Summoner? selected) {
     if(Summoner.selected != null) {
-      Summoner.selected.isSelected = false;
+      Summoner.selected!.isSelected = false;
     }
 
     if (selected == null) {
@@ -149,13 +149,20 @@ class _SummonerListState extends State<SummonerList> {
   /// Get summoners from the preferences
   void _loadSummonerFromPreferences() async {
     DeviceInfo.loadSharedPreferences().then((value) async {
-      List<String> keys = value.getStringList('puuid');
-      if(keys == null || _summonerList.isNotEmpty)
+      if(_summonerList.isNotEmpty)
         return;
+
+      List<String> keys;
+      if (value.containsKey('puuid')) {
+        keys = value.getStringList('puuid')!;
+      }
+      else {
+        return;
+      }
 
       String _selectedKey = '';
       if(value.containsKey('selected')) {
-        _selectedKey = value.getString('selected');
+        _selectedKey = value.getString('selected')!;
       }
 
       for(String key in keys) {
@@ -180,7 +187,7 @@ class _SummonerListState extends State<SummonerList> {
 
       List<String> _keys = _getSortedKeys();
       for(int i=0; i < _keys.length; i++) {
-        _animatedListKey.currentState.insertItem(i);
+        _animatedListKey.currentState!.insertItem(i);
       }
 
     });
@@ -189,7 +196,7 @@ class _SummonerListState extends State<SummonerList> {
   List<String> _getSortedKeys() {
     List<String> _keys = _summonerList.keys.toList();
     _keys.sort((a, b) {
-      return _summonerList[a].name.compareTo(_summonerList[b].name);
+      return _summonerList[a]!.name.compareTo(_summonerList[b]!.name);
     });
     return _keys;
   }
@@ -197,7 +204,6 @@ class _SummonerListState extends State<SummonerList> {
   @override
   void initState() {
     super.initState();
-    myFocusNode = FocusNode();
     _loadSummonerFromPreferences();
   }
 
@@ -249,7 +255,7 @@ class _SummonerListState extends State<SummonerList> {
                   itemBuilder: (context, index, animation) {
                     List<String> _keys = _getSortedKeys();
                     String key = _keys[index];
-                    Summoner currSummoner = _summonerList[key];
+                    Summoner currSummoner = _summonerList[key]!;
                     Color color = currSummoner.isSelected ? Colors.green : Colors.red;
                     return _cardBuilder(currSummoner, color, index, context, animation);
                   },
@@ -263,7 +269,7 @@ class _SummonerListState extends State<SummonerList> {
 }
 
 class SummonerCard extends StatelessWidget {
-  SummonerCard({Key key, @required this.color, @required this.summoner}) :
+  SummonerCard({Key? key, required this.color, required this.summoner}) :
         super(key: key);
 
   final Color color;
@@ -294,7 +300,7 @@ class SummonerCard extends StatelessWidget {
 }
 
 class PlaceholderCard extends StatelessWidget {
-  PlaceholderCard({Key key, @required this.height, @required this.animation}) :
+  PlaceholderCard({Key? key, required this.height, required this.animation}) :
     super(key: key);
 
   final double height;

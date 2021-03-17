@@ -12,8 +12,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
   static PageStorageKey _summonerListKey = PageStorageKey('SummonerList');
-  int _selectedIndex;
-  PageController _pageController;
+  int _selectedIndex = 0;
+  late PageController _pageController;
   List<Widget> bodies = [
     SummonerList(key: _summonerListKey,),
     SummonerInfo(),
@@ -55,16 +55,16 @@ class _HomeState extends State<Home> {
         child: Stack(
           children: <Widget>[
             Opacity(
-          opacity: 0.75,
-          child: Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [Colors.blue, Colors.red]),
-                  ),
-          ),
-        ),
+              opacity: 0.75,
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [Colors.blue, Colors.red]),
+                ),
+              ),
+            ),
             PageView(
               children: bodies,
               controller: _pageController,
@@ -84,24 +84,24 @@ class _HomeState extends State<Home> {
         onTap: _onTappedItem,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            title: Text("Summoners")
+              icon: Icon(Icons.add),
+              label: "Summoners"
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            title: Text("Summoner Info")
+              icon: Icon(Icons.person),
+              label: "Summoner Info"
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.history),
-            title: Text("Match History")
+              icon: Icon(Icons.history),
+              label: "Match History"
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.live_help),
-              title: Text("Live Match")
+              label: "Live Match"
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.settings),
-              title: Text("Settings")
+              label: "Settings"
           ),
         ],
       ),

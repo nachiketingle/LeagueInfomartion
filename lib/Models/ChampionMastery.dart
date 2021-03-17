@@ -1,17 +1,17 @@
 import 'package:lolinfo/Models/Champion.dart';
 
 class ChampionMastery {
-  int championPointTillNextLevel;
-  bool chestGranted;
-  int champId;
-  int lastPlayTime;
-  int champLevel;
-  String summonerId;
-  int champPoints;
-  int champPointsSinceLastLevel;
-  int tokensEarned;
+  late int championPointTillNextLevel;
+  late bool chestGranted;
+  late int champId;
+  late int lastPlayTime;
+  late int champLevel;
+  late String summonerId;
+  late int champPoints;
+  late int champPointsSinceLastLevel;
+  late int tokensEarned;
 
-  Champion champ;
+  Champion? champ;
 
   ChampionMastery.fromJson(Map<String, dynamic> json) {
     
@@ -27,7 +27,7 @@ class ChampionMastery {
   }
 
   int compareTo(ChampionMastery other) {
-    return this.champ.name.compareTo(other.champ.name);
+    return this.champ!.name!.compareTo(other.champ!.name!);
   }
 
 }

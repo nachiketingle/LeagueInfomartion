@@ -1,18 +1,17 @@
-import 'package:flutter/material.dart';
 import 'package:lolinfo/Models/Champion.dart';
 import 'package:lolinfo/Networking/DDragonService.dart';
 
 class MatchParticipant {
 
-  int teamId;
-  int spell1Id;
-  int spell2Id;
-  int championId;
-  int profileIconId;
-  String summonerName;
-  String summonerId;
+  late int teamId;
+  late int spell1Id;
+  late int spell2Id;
+  late int championId;
+  late int profileIconId;
+  late String summonerName;
+  late String summonerId;
   bool isBlue;
-  Champion champion;
+  late Champion champion;
 
   MatchParticipant(this.teamId, this.spell1Id, this.spell2Id, this.championId, this.profileIconId, this.summonerName, this.summonerId, this.isBlue) {
     champion = Champion.min(id: championId);
@@ -24,7 +23,7 @@ class MatchParticipant {
     spell2Id = json['spell2Id'];
     championId = json['championId'];
     DDragonService.getAllChampions().then((value) {
-      champion = value[championId];
+      champion = value[championId]!;
     });
     //champion = Champion.min(id: championId);
     profileIconId = json['profileIconId'];

@@ -4,7 +4,7 @@ class FadePageTransition extends PageRouteBuilder {
 
   final Widget page;
 
-  FadePageTransition({@required this.page}) :
+  FadePageTransition({required this.page}) :
     super(
       pageBuilder: (context, animation, secondaryAnimation) {
         return page;
@@ -19,7 +19,7 @@ class FadePageTransition extends PageRouteBuilder {
 class SlidePageTransition extends PageRouteBuilder {
   final Widget page;
 
-  SlidePageTransition({@required this.page}) :
+  SlidePageTransition({required this.page}) :
     super(
       pageBuilder: (context, animation, secondaryAnimation) {
         return page;
@@ -35,7 +35,7 @@ class SlidePageTransition extends PageRouteBuilder {
         );
 
         return SlideTransition(
-          position: tween.animate(curvedAnimation),
+          position: tween.animate(curvedAnimation) as Animation<Offset>,
           child: child
         );
       }

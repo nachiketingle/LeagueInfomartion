@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:lolinfo/Networking/DDragonService.dart';
 
 class Summoner {
-  String accountId;
-  int profileIconId;
-  int revisionDate;
-  String name;
-  String id;
-  String puuid;
-  int summonerLevel;
-  static Summoner selected;
-  bool isSelected;
-  Image profileIcon;
-  Map<String, dynamic> json;
+  late String accountId;
+  late int profileIconId;
+  late int revisionDate;
+  late String name;
+  late String id;
+  late String puuid;
+  late int summonerLevel;
+  static Summoner? selected;
+  bool isSelected = false;
+  late Image profileIcon;
+  late Map<String, dynamic> json;
 
   Summoner.fromJson(Map<String, dynamic> json) {
     id = json['id'];

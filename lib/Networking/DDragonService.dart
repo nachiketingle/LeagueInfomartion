@@ -16,7 +16,7 @@ class DDragonService {
   }
 
   static Image getChampIcon(String name,
-      {double imageWidth: null, double imageHeight: null}) {
+      {double? imageWidth, double? imageHeight}) {
     return Image.network(
       Constants.ddragonURLPatch + "img/champion/" + name + ".png",
       width: imageWidth,
@@ -44,7 +44,7 @@ class DDragonService {
   }
 
   static Image getMasteryIcon(int masteryLevel,
-      {double imageWidth: null, double imageHeight: null}) {
+      {double? imageWidth, double? imageHeight}) {
     String val = masteryLevel.toString();
     if (masteryLevel <= 3) {
       val = "default";
@@ -58,7 +58,7 @@ class DDragonService {
 
     if (imageWidth == null && imageHeight == null) {
       if (_assets.containsKey(url)) {
-        image = _assets[url];
+        image = _assets[url] as Image;
       } else {
         image = Image.network(url);
         _assets[url] = image;
@@ -74,13 +74,13 @@ class DDragonService {
   }
 
   static Image getSplashArt(String name,
-      {double imageWidth: null, double imageHeight: null}) {
+      {double? imageWidth, double? imageHeight}) {
         Image image;
         String url = Constants.ddragonURL + "img/champion/splash/" + name + "_0.jpg";
 
     if (imageWidth == null && imageHeight == null) {
       if (_assets.containsKey(url)) {
-        image = _assets[url];
+        image = _assets[url] as Image;
       } else {
         image = Image.network(url);
         _assets[url] = image;

@@ -8,14 +8,14 @@ import 'package:lolinfo/Networking/RiotService.dart';
 import '../Models/Summoner.dart';
 
 class SummonerInfo extends StatefulWidget {
-  SummonerInfo({Key key}) : super(key: key);
+  SummonerInfo({Key? key}) : super(key: key);
 
   _SummonerInfoState createState() => _SummonerInfoState();
 }
 
 class _SummonerInfoState extends State<SummonerInfo> {
-  Summoner _displaySummoner;
-  List<int> _keys;
+  Summoner? _displaySummoner = Summoner.selected;
+  List<int>? _keys;
   Map<int, ChampionMastery> _allChamps = Map();
 
   void initState() {
@@ -28,7 +28,7 @@ class _SummonerInfoState extends State<SummonerInfo> {
     }
     _displaySummoner = Summoner.selected;
     List<ChampionMastery> _list =
-        await RiotService.getChampionMasteries(_displaySummoner.id)
+        await RiotService.getChampionMasteries(_displaySummoner!.id)
             .catchError((onError) {
       return false;
     });
@@ -52,7 +52,7 @@ class _SummonerInfoState extends State<SummonerInfo> {
             children: [
               Flexible(
                 flex: 1,
-                child: Header(displaySummoner: _displaySummoner),
+                child: Header(displaySummoner: _displaySummoner!),
               ),
               Flexible(
                 flex: 5,
@@ -69,7 +69,7 @@ class _SummonerInfoState extends State<SummonerInfo> {
 }
 
 class Header extends StatelessWidget {
-  Header({@required this.displaySummoner});
+  Header({required this.displaySummoner});
 
   final Summoner displaySummoner;
 
@@ -110,15 +110,15 @@ class Header extends StatelessWidget {
 }
 
 class CustomDataTable extends StatefulWidget {
-  CustomDataTable({Key key, @required this.champMap}) : super(key: key);
-  final Map champMap;
+  CustomDataTable({Key? key, required this.champMap}) : super(key: key);
+  final Map<int, ChampionMastery> champMap;
 
   _CustomDataTableState createState() => _CustomDataTableState();
 }
 
 class _CustomDataTableState extends State<CustomDataTable> {
-  List<int> _keys;
-  Map<int, ChampionMastery> champMap;
+  late List<int> _keys;
+  late Map<int, ChampionMastery> champMap;
   bool _nameSort = false;
   bool _nameAscending = true;
 
@@ -143,9 +143,9 @@ class _CustomDataTableState extends State<CustomDataTable> {
 
     _keys.sort((a, b) {
       if (_nameAscending) {
-        return champMap[a].champ.name.compareTo(champMap[b].champ.name);
+        return champMap[a]!.champ!.name!.compareTo(champMap[b]!.champ!.name!);
       } else {
-        return champMap[b].champ.name.compareTo(champMap[a].champ.name);
+        return champMap[b]!.champ!.name!.compareTo(champMap[a]!.champ!.name!);
       }
     });
 
@@ -162,9 +162,9 @@ class _CustomDataTableState extends State<CustomDataTable> {
 
     _keys.sort((a, b) {
       if (_pointAscending) {
-        return champMap[a].champPoints.compareTo(champMap[b].champPoints);
+        return champMap[a]!.champPoints.compareTo(champMap[b]!.champPoints);
       } else {
-        return champMap[b].champPoints.compareTo(champMap[a].champPoints);
+        return champMap[b]!.champPoints.compareTo(champMap[a]!.champPoints);
       }
     });
 
@@ -221,7 +221,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
             child: ListView.builder(
               itemCount: widget.champMap.length,
               itemBuilder: (context, index) {
-                return ChampTile(champMastery: champMap[_keys[index]]);
+                return ChampTile(champMastery: champMap[_keys[index]]!);
               },
             ),
           ),
@@ -232,7 +232,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
 }
 
 class ChampTile extends StatelessWidget {
-  ChampTile({Key key, @required this.champMastery}) : super(key: key);
+  ChampTile({Key? key, required this.champMastery}) : super(key: key);
   ChampionMastery champMastery;
 
   @override
@@ -249,7 +249,7 @@ class ChampTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 //Container(),
-                DDragonService.getChampIcon(champMastery.champ.name),
+                DDragonService.getChampIcon(champMastery.champ!.name!),
                 Column(
                   children: <Widget>[
                     Expanded(

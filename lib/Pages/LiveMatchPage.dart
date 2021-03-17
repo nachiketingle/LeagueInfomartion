@@ -13,8 +13,9 @@ class LiveMatchPage extends StatefulWidget {
 
 class _LiveMatchPageState extends State<LiveMatchPage> {
 
-  Future<LiveMatch> getLiveMatch() async {
-    return RiotService.getLiveMatch(Summoner.selected.id);
+  Future<LiveMatch?> getLiveMatch() async {
+    if(Summoner.selected == null) return null;
+    return RiotService.getLiveMatch(Summoner.selected!.id);
   }
 
   @override
@@ -26,7 +27,7 @@ class _LiveMatchPageState extends State<LiveMatchPage> {
           future: getLiveMatch(),
           builder: (context, snapshot) {
             if(snapshot.hasData) {
-              LiveMatch match = snapshot.data;
+              LiveMatch match = snapshot.data as LiveMatch;
               return ListView.builder(
                 itemCount: match.blueSide.length,
                 itemBuilder: (context, index) {
@@ -53,7 +54,7 @@ class _LiveMatchPageState extends State<LiveMatchPage> {
 
 class LaneMatchup extends StatelessWidget {
 
-  LaneMatchup({Key key, this.blue, this.red}) :
+  LaneMatchup({Key? key, required this.blue, required this.red}) :
         super(key: key);
 
   final MatchParticipant blue;
@@ -93,7 +94,7 @@ class LaneMatchup extends StatelessWidget {
 }
 
 class Side extends StatelessWidget {
-  Side({Key key, @required this.participant, this.isBlue: true}) :
+  Side({Key? key, required this.participant, this.isBlue: true}) :
         super(key: key);
   final MatchParticipant participant;
   final bool isBlue;
@@ -109,7 +110,7 @@ class Side extends StatelessWidget {
             participant.summonerName,
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
           ),
-          DDragonService.getChampIcon(participant.champion.name, imageHeight: 75)
+          DDragonService.getChampIcon(participant.champion.name!, imageHeight: 75)
         ],
       ),
     );

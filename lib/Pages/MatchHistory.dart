@@ -8,7 +8,7 @@ import 'package:lolinfo/Pages/MatchInfo.dart';
 import 'package:lolinfo/Animations/PageTransitions.dart';
 
 class MatchHistory extends StatefulWidget {
-  MatchHistory({Key key}) :
+  MatchHistory({Key? key}) :
         super(key: key);
 
   _MatchHistoryState createState() => _MatchHistoryState();
@@ -16,10 +16,10 @@ class MatchHistory extends StatefulWidget {
 
 class _MatchHistoryState extends State<MatchHistory> {
 
-  Future<List<PastMatch>> _getMatches() async {
+  Future<List<PastMatch>?> _getMatches() async {
     if(Summoner.selected == null)
       return null;
-    return await RiotService.getMatchHistory(Summoner.selected.accountId);
+    return await RiotService.getMatchHistory(Summoner.selected!.accountId);
   }
   
 
@@ -30,7 +30,7 @@ class _MatchHistoryState extends State<MatchHistory> {
       future: _getMatches(),
       builder: (context, snapshot) {
         if(snapshot.hasData && snapshot.data != null) {
-          List<PastMatch> matches = snapshot.data;
+          List<PastMatch> matches = snapshot.data as List<PastMatch>;
 
           return Padding(
             padding: const EdgeInsets.all(8.0),
@@ -39,7 +39,7 @@ class _MatchHistoryState extends State<MatchHistory> {
               itemBuilder: (context, index) {
                 PastMatch currMatch = matches[index];
                 return Card(
-                  child: FlatButton(
+                  child: TextButton(
                     onPressed: () {
                       // TODO: Display match info
                       Navigator.of(context).push(FadePageTransition(page: MatchInfo(match: currMatch,)));
@@ -57,12 +57,12 @@ class _MatchHistoryState extends State<MatchHistory> {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     DDragonService.getChampIcon(
-                                        currMatch.champ.name,
+                                        currMatch.champ.name!,
                                         imageWidth: 50
                                     ),
                                     Column(
                                       children: <Widget>[
-                                        Text(currMatch.champ.name),
+                                        Text(currMatch.champ.name!),
                                         Text(currMatch.lane, style: TextStyle(
                                           color: Colors.grey,
                                           fontSize: 12
