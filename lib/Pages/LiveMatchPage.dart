@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lolinfo/Models/LiveMatch.dart';
-import 'package:lolinfo/Models/MatchParticipant.dart';
+import 'package:lolinfo/Models/LiveMatchParticipant.dart';
 import 'package:lolinfo/Models/Summoner.dart';
 import 'package:lolinfo/Networking/DDragonService.dart';
 import 'package:lolinfo/Networking/RiotService.dart';
@@ -57,8 +57,8 @@ class LaneMatchup extends StatelessWidget {
   LaneMatchup({Key? key, required this.blue, required this.red}) :
         super(key: key);
 
-  final MatchParticipant blue;
-  final MatchParticipant red;
+  final LiveMatchParticipant blue;
+  final LiveMatchParticipant red;
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +96,7 @@ class LaneMatchup extends StatelessWidget {
 class Side extends StatelessWidget {
   Side({Key? key, required this.participant, this.isBlue: true}) :
         super(key: key);
-  final MatchParticipant participant;
+  final LiveMatchParticipant participant;
   final bool isBlue;
 
   Widget build(BuildContext context) {

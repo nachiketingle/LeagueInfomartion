@@ -4,7 +4,7 @@ import 'package:lolinfo/Models/PastMatch.dart';
 import 'package:lolinfo/Models/Summoner.dart';
 import 'package:lolinfo/Networking/DDragonService.dart';
 import 'package:lolinfo/Networking/RiotService.dart';
-import 'package:lolinfo/Pages/MatchInfo.dart';
+import 'package:lolinfo/Pages/MatchInfoPage.dart';
 import 'package:lolinfo/Animations/PageTransitions.dart';
 
 class MatchHistory extends StatefulWidget {
@@ -29,6 +29,10 @@ class _MatchHistoryState extends State<MatchHistory> {
     return FutureBuilder (
       future: _getMatches(),
       builder: (context, snapshot) {
+        if(snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
+
         if(snapshot.hasData && snapshot.data != null) {
           List<PastMatch> matches = snapshot.data as List<PastMatch>;
 
@@ -42,7 +46,7 @@ class _MatchHistoryState extends State<MatchHistory> {
                   child: TextButton(
                     onPressed: () {
                       // TODO: Display match info
-                      Navigator.of(context).push(FadePageTransition(page: MatchInfo(match: currMatch,)));
+                      Navigator.of(context).push(FadePageTransition(page: MatchInfoPage(match: currMatch,)));
                     },
                     child: Container(
                       child: Padding(
@@ -85,7 +89,7 @@ class _MatchHistoryState extends State<MatchHistory> {
           );
         }
         else {
-          return Center(child: CircularProgressIndicator(),);
+          return Center(child: Text("No Summoner Selected"),);
         }
       },
     );

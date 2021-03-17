@@ -28,8 +28,8 @@ class _SummonerInfoState extends State<SummonerInfo> {
     }
     _displaySummoner = Summoner.selected;
     List<ChampionMastery> _list =
-        await RiotService.getChampionMasteries(_displaySummoner!.id)
-            .catchError((onError) {
+    await RiotService.getChampionMasteries(_displaySummoner!.id)
+        .catchError((onError) {
       return false;
     });
     _allChamps.clear();
@@ -46,22 +46,25 @@ class _SummonerInfoState extends State<SummonerInfo> {
     return FutureBuilder(
       future: _getDisplayInfo(),
       builder: (context, snapshot) {
+        if(snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
         if (snapshot.hasData && snapshot.data == true) {
           return Center(
               child: Column(
-            children: [
-              Flexible(
-                flex: 1,
-                child: Header(displaySummoner: _displaySummoner!),
-              ),
-              Flexible(
-                flex: 5,
-                child: CustomDataTable(champMap: _allChamps),
-              ),
-            ],
-          ));
+                children: [
+                  Flexible(
+                    flex: 1,
+                    child: Header(displaySummoner: _displaySummoner!),
+                  ),
+                  Flexible(
+                    flex: 5,
+                    child: CustomDataTable(champMap: _allChamps),
+                  ),
+                ],
+              ));
         } else {
-          return Center(child: CircularProgressIndicator());
+          return Center(child: Text("No Summoner Selected"),);
         }
       },
     );
@@ -191,8 +194,8 @@ class _CustomDataTableState extends State<CustomDataTable> {
                         Text("Name"),
                         _nameSort
                             ? Icon(_nameAscending
-                                ? Icons.arrow_upward
-                                : Icons.arrow_downward)
+                            ? Icons.arrow_upward
+                            : Icons.arrow_downward)
                             : Container()
                       ],
                     ),
@@ -207,8 +210,8 @@ class _CustomDataTableState extends State<CustomDataTable> {
                         Text("Points"),
                         _pointSort
                             ? Icon(_pointAscending
-                                ? Icons.arrow_upward
-                                : Icons.arrow_downward)
+                            ? Icons.arrow_upward
+                            : Icons.arrow_downward)
                             : Container()
                       ],
                     ),

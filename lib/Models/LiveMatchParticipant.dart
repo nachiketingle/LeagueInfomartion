@@ -1,7 +1,7 @@
 import 'package:lolinfo/Models/Champion.dart';
 import 'package:lolinfo/Networking/DDragonService.dart';
 
-class MatchParticipant {
+class LiveMatchParticipant {
 
   late int teamId;
   late int spell1Id;
@@ -10,14 +10,14 @@ class MatchParticipant {
   late int profileIconId;
   late String summonerName;
   late String summonerId;
-  bool isBlue;
+  late bool isBlue;
   late Champion champion;
 
-  MatchParticipant(this.teamId, this.spell1Id, this.spell2Id, this.championId, this.profileIconId, this.summonerName, this.summonerId, this.isBlue) {
+  LiveMatchParticipant(this.teamId, this.spell1Id, this.spell2Id, this.championId, this.profileIconId, this.summonerName, this.summonerId, this.isBlue) {
     champion = Champion.min(id: championId);
   }
 
-  MatchParticipant.fromJson(Map<String, dynamic> json, this.isBlue) {
+  LiveMatchParticipant.fromJson(Map<String, dynamic> json, this.isBlue) {
     teamId = json['teamId'];
     spell1Id = json['spell1Id'];
     spell2Id = json['spell2Id'];

@@ -1,10 +1,10 @@
 import 'package:lolinfo/Models/Champion.dart';
 
-import 'MatchParticipant.dart';
+import 'LiveMatchParticipant.dart';
 
 class LiveMatch {
-  List<MatchParticipant> blueSide = [];
-  List<MatchParticipant> redSide = [];
+  List<LiveMatchParticipant> blueSide = [];
+  List<LiveMatchParticipant> redSide = [];
   List<Champion> bannedChamps = [];
 
 
@@ -13,10 +13,10 @@ class LiveMatch {
     int count = 0;
     for(Map<String, dynamic> summonerJson in json['participants']) {
       if(count < 5) {
-        blueSide.add(MatchParticipant.fromJson(summonerJson, true));
+        blueSide.add(LiveMatchParticipant.fromJson(summonerJson, true));
       }
       else {
-        redSide.add(MatchParticipant.fromJson(summonerJson, false));
+        redSide.add(LiveMatchParticipant.fromJson(summonerJson, false));
       }
       count++;
     }

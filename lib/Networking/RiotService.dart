@@ -2,10 +2,12 @@ import 'dart:convert';
 
 import 'package:lolinfo/Models/Champion.dart';
 import 'package:lolinfo/Models/LiveMatch.dart';
+import 'package:lolinfo/Models/MatchInfo.dart';
 import 'package:lolinfo/Models/PastMatch.dart';
 import 'package:lolinfo/Models/Summoner.dart';
 import 'package:lolinfo/Models/ChampionMastery.dart';
 import 'package:lolinfo/Networking/DDragonService.dart';
+import 'package:lolinfo/Pages/AllPages.dart';
 import 'Network.dart';
 
 class RiotService {
@@ -62,6 +64,13 @@ class RiotService {
     }
 
     return _list;
+  }
+
+  static Future<MatchInfo> getMatchInfo(PastMatch pastMatch) async {
+    String type = 'lol/match/v4/matches/' + pastMatch.gameId.toString();
+    String response = await Network.get(type, null);
+    Map<String, dynamic> json = jsonDecode(response);
+    return MatchInfo.fromJson(json);
   }
 
   static Future<LiveMatch?> getLiveMatch(String summonerId) async {
