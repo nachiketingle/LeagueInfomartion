@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lolinfo/Models/MatchInfo.dart';
-import 'package:lolinfo/Models/LiveMatchParticipant.dart';
 import 'package:lolinfo/Models/Participant.dart';
 import 'package:lolinfo/Models/ParticipantIdentity.dart';
 import 'package:lolinfo/Models/PastMatch.dart';
@@ -60,14 +59,74 @@ class _AllSummoners extends StatelessWidget {
   Widget build(BuildContext context) {
     List<ParticipantDto> participants = matchInfo.participants;
 
-    return ListView.builder(
-      itemCount: participants.length,
-      itemBuilder: (context, index) {
-        ParticipantDto participant = participants[index];
-        ParticipantIdentityDto participantId = participant.identityDto;
-        PlayerDto player = participantId.player;
-        return Text(player.summonerName + "\t"+ participant.participantId.toString());
-      },
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  itemCount: participants.length ~/ 2,
+                  itemBuilder: (context, index) {
+                    ParticipantDto participant = participants[index];
+                    ParticipantIdentityDto participantId = participant.identityDto;
+                    PlayerDto player = participantId.player;
+                    //return Text(player.summonerName + "\t"+ participant.participantId.toString());
+                    return Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row(
+                        children: [
+                          DDragonService.getChampIcon(
+                            participant.champ.name!,
+                            imageHeight: 50,
+                          ),
+                          SizedBox(width: 10,),
+                          Text(player.summonerName, style: TextStyle(fontSize: 12),),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  itemCount: participants.length ~/ 2,
+                  itemBuilder: (context, index) {
+                    ParticipantDto participant = participants[index + participants.length ~/ 2];
+                    ParticipantIdentityDto participantId = participant.identityDto;
+                    PlayerDto player = participantId.player;
+                    //return Text(player.summonerName + "\t"+ participant.participantId.toString());
+                    return Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(player.summonerName, style: TextStyle(fontSize: 12),),
+                          SizedBox(width: 10,),
+                          DDragonService.getChampIcon(
+                            participant.champ.name!,
+                            imageHeight: 50,
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
 
   }
