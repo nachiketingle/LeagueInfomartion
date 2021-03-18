@@ -9,12 +9,14 @@ class DDragonService {
   static Map<int, Champion> _allChamps = Map(); //champion.json
   static Map<String, Widget> _assets = Map();
 
+  /// Get the profile image based on the id
   static Image getProfileImage(int id) {
     return Image.network(
       Constants.ddragonURLPatch + "img/profileicon/" + id.toString() + ".png",
     );
   }
 
+  /// Get the icon for the given champion
   static Image getChampIcon(String name,
       {double? imageWidth, double? imageHeight}) {
     return Image.network(
@@ -24,6 +26,19 @@ class DDragonService {
     );
   }
 
+  /// Get the appropriate end of game of game image text
+  static Image getEndOfGameImage(bool victory,
+      {double? imageWidth, double? imageHeight}) {
+    return Image.network(
+      Constants.rawDDragonAssetsURL + "ux/endofgame/en_us/" +
+          (victory ? "victory" : "defeat")  + ".png",
+      width: imageWidth,
+      height: imageHeight,
+    );
+  }
+
+  /// Get the map of all champions
+  /// Keys are champion id, and values are the champion objects
   static Future<Map<int, Champion>> getAllChampions() async {
     if (_allChamps.isNotEmpty) {
       return _allChamps;
@@ -43,6 +58,7 @@ class DDragonService {
     return _finalList;
   }
 
+  /// Get the icon with the associated mastery level
   static Image getMasteryIcon(int masteryLevel,
       {double? imageWidth, double? imageHeight}) {
     String val = masteryLevel.toString();
@@ -73,10 +89,11 @@ class DDragonService {
     return image;
   }
 
+  /// Get the given champions splash art
   static Image getSplashArt(String name,
       {double? imageWidth, double? imageHeight}) {
-        Image image;
-        String url = Constants.ddragonURL + "img/champion/splash/" + name + "_0.jpg";
+    Image image;
+    String url = Constants.ddragonURL + "img/champion/splash/" + name + "_0.jpg";
 
     if (imageWidth == null && imageHeight == null) {
       if (_assets.containsKey(url)) {

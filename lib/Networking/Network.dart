@@ -2,7 +2,7 @@ import 'package:http/http.dart' as http;
 import '../Helpers/Constants.dart';
 class Network with Constants{
 
-
+  /// REST API get request
   static Future<dynamic> get(String type, Map<String, String>? queries) async {
     Map<String, String> headers = Map();
     headers['Content-Type'] = 'application/json';
@@ -18,6 +18,7 @@ class Network with Constants{
     return response.body;
   }
 
+  /// REST API get request from DDragon
   static Future<dynamic> getDDragon(String type, String query, {bool patch: true}) async {
     Map<String, String> headers = Map();
     headers['Content-Type'] = 'application/json';

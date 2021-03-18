@@ -7,6 +7,8 @@ class MatchInfo {
   late int gameId;
   List<ParticipantDto> participants = [];
   List<ParticipantIdentityDto> participantIds = [];
+  late TeamStatsDto blueStats;
+  late TeamStatsDto redStats;
 
   MatchInfo.fromJson(Map<String, dynamic> json) {
     gameId = json["gameId"];
@@ -20,5 +22,28 @@ class MatchInfo {
       ParticipantDto participant = ParticipantDto.fromJson(participantJson, participantIds[count++]);
       participants.add(participant);
     }
+
+    for(Map<String, dynamic> teamJson in json["teams"]) {
+      TeamStatsDto team = TeamStatsDto.fromJson(teamJson);
+      if(team.isBlue) blueStats = team;
+      else redStats = team;
+    }
+  }
+}
+
+class TeamStatsDto {
+  late bool win;
+
+  /// 'Win' if win, otherwise 'Fail'
+  void set winString(String string) {
+    win = string == 'Win';
+  }
+  late int teamId;
+  late bool isBlue;
+
+  TeamStatsDto.fromJson(Map<String, dynamic> json) {
+    teamId = json["teamId"];
+    isBlue = teamId == 100;
+    winString = json["win"];
   }
 }
