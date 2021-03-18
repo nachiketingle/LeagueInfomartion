@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:lolinfo/Helpers/Constants.dart';
 import 'package:lolinfo/Models/Champion.dart';
+import 'package:lolinfo/Models/SummonerSpell.dart';
 import 'package:lolinfo/Networking/Network.dart';
 
 class DDragonService {
   static Map<int, Champion> _allChamps = Map(); //champion.json
+  static Map<int, SummonerSpell> _allSpells = Map();
   static Map<String, Widget> _assets = Map();
 
   /// Get the profile image based on the id
@@ -21,6 +23,15 @@ class DDragonService {
       {double? imageWidth, double? imageHeight}) {
     return Image.network(
       Constants.ddragonURLPatch + "img/champion/" + name + ".png",
+      width: imageWidth,
+      height: imageHeight,
+    );
+  }
+
+  static Image getSpellIcon(SummonerSpell spell,
+  {double? imageWidth, double? imageHeight}) {
+    return Image.network(
+      Constants.ddragonURLPatch + "img/spell/" + spell.fullImage,
       width: imageWidth,
       height: imageHeight,
     );
@@ -43,7 +54,7 @@ class DDragonService {
     if (_allChamps.isNotEmpty) {
       return _allChamps;
     }
-    print("Pulling All champs from network");
+    print("Pulling all champs from network");
     String type = 'data/en_US/';
     String query = 'champion.json';
     String response = await Network.getDDragon(type, query);
@@ -56,6 +67,25 @@ class DDragonService {
     });
     _allChamps = _finalList;
     return _finalList;
+  }
+
+  static Future<Map<int, SummonerSpell>> getAllSummonerSpells() async {
+    if(_allSpells.isNotEmpty) {
+      return _allSpells;
+    }
+    print("Pulling all summoner spells from network");
+    String type = 'data/en_US/';
+    String query = 'summoner.json';
+    String response = await Network.getDDragon(type, query);
+    Map<int, SummonerSpell> _finalList = Map();
+    Map<String, dynamic> json = jsonDecode(response);
+    json = json['data'];
+    json.forEach((key, value) {
+      SummonerSpell spell = SummonerSpell.fromJson(value);
+      _finalList[spell.key] = spell;
+    });
+    _allSpells.addAll(_finalList);
+    return _allSpells;
   }
 
   /// Get the icon with the associated mastery level
@@ -110,5 +140,21 @@ class DDragonService {
       );
     }
     return image;
+  }
+
+  static Image getGoldIcon({double? imageWidth, double? imageHeight}) {
+    return Image.network(
+      Constants.rawDDragonPluginsURL + "rcp-fe-lol-postgame/global/default/mask-icon-gold.png",
+      width: imageWidth,
+      height: imageHeight,
+    );
+  }
+
+  static Image getCSIcon({double? imageWidth, double? imageHeight}) {
+    return Image.network(
+      Constants.rawDDragonPluginsURL + "rcp-fe-lol-postgame/global/default/mask-icon-cs.png",
+      width: imageWidth,
+      height: imageHeight,
+    );
   }
 }

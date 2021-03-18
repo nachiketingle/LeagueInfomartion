@@ -1,7 +1,4 @@
-import 'dart:convert';
-
 import 'package:lolinfo/Models/Participant.dart';
-import 'package:lolinfo/Models/ParticipantIdentity.dart';
 
 class MatchInfo {
   late int gameId;

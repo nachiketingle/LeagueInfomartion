@@ -4,7 +4,7 @@ import 'package:lolinfo/Models/PastMatch.dart';
 import 'package:lolinfo/Models/Summoner.dart';
 import 'package:lolinfo/Networking/DDragonService.dart';
 import 'package:lolinfo/Networking/RiotService.dart';
-import 'package:lolinfo/Pages/MatchInfoPage.dart';
+import 'package:lolinfo/Pages/MatchInfoPages/MatchInfoPage.dart';
 import 'package:lolinfo/Animations/PageTransitions.dart';
 
 class MatchHistory extends StatefulWidget {

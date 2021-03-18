@@ -1,70 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lolinfo/Models/MatchInfo.dart';
 import 'package:lolinfo/Models/Participant.dart';
-import 'package:lolinfo/Models/ParticipantIdentity.dart';
-import 'package:lolinfo/Models/PastMatch.dart';
-import 'package:lolinfo/Networking/RiotService.dart';
 import 'package:lolinfo/Networking/DDragonService.dart';
 
-class MatchInfoPage extends StatefulWidget {
-  MatchInfoPage({Key? key, required this.match}) :
-        super(key: key);
-
-  final PastMatch match;
-
-  _MatchInfoState createState() => _MatchInfoState();
-}
-
-class _MatchInfoState extends State<MatchInfoPage> {
-
-  PageController _controller = PageController();
-
-  Future<MatchInfo> _getInfo(PastMatch match) async {
-    return RiotService.getMatchInfo(match);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-            title: Text(widget.match.gameId.toString())
-        ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            _HeroTile(match: widget.match),
-            Expanded(
-              child: PageView(
-                controller: _controller,
-                children: [
-                  FutureBuilder(
-                    future: _getInfo(widget.match),
-                    builder: (context, snapshot) {
-                      if(snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator(),);
-                      }
-
-                      MatchInfo info = snapshot.data as MatchInfo;
-                      return _AllSummoners(matchInfo: info);
-                    },
-                  ),
-                  Center(
-                    child: Text("Second Page"),
-                  )
-                ],
-              ),
-            )
-          ],
-        )
-    );
-  }
-
-}
-
-class _AllSummoners extends StatelessWidget {
+class AllSummoners extends StatelessWidget {
   final MatchInfo matchInfo;
-  _AllSummoners({Key? key, required this.matchInfo}) : super(key: key);
+  AllSummoners({Key? key, required this.matchInfo}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -83,9 +24,9 @@ class _AllSummoners extends StatelessWidget {
 }
 
 class _SummonerSide extends StatelessWidget {
-  List<ParticipantDto> participants;
-  bool isBlue;
-  bool win;
+  final List<ParticipantDto> participants;
+  final bool isBlue;
+  final bool win;
 
   _SummonerSide({Key? key, required this.participants, required this.isBlue, required this.win})
       :super(key: key);
@@ -154,47 +95,6 @@ class _SummonerSide extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _HeroTile extends StatelessWidget {
-  final PastMatch match;
-  _HeroTile({Key? key, required this.match}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Hero(
-        tag: match.gameId.toString(),
-        child: Material(
-          type: MaterialType.transparency,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              DDragonService.getChampIcon(
-                  match.champ.name!,
-                  imageWidth: 50
-              ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Text(match.champ.name!),
-                    Text(match.lane, style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 12
-                    ),),
-                  ],
-                ),
-              ),
-              Text(match.dateTime.toLocal().toString())
-            ],
-          ),
-        ),
       ),
     );
   }

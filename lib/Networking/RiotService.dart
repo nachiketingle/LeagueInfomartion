@@ -6,8 +6,8 @@ import 'package:lolinfo/Models/MatchInfo.dart';
 import 'package:lolinfo/Models/PastMatch.dart';
 import 'package:lolinfo/Models/Summoner.dart';
 import 'package:lolinfo/Models/ChampionMastery.dart';
+import 'package:lolinfo/Models/SummonerSpell.dart';
 import 'package:lolinfo/Networking/DDragonService.dart';
-import 'package:lolinfo/Pages/AllPages.dart';
 import 'Network.dart';
 
 class RiotService {
@@ -51,6 +51,12 @@ class RiotService {
   static Future<Champion?> getChampionInfo(int champId) async {
     Map<int, Champion> _list = await DDragonService.getAllChampions();
     return _list[champId];
+  }
+
+  /// Gets the [SummonerSpell] from the summoner spell id
+  static Future<SummonerSpell?> getSummonerSpellInfo(int spellId) async {
+    Map<int, SummonerSpell> _list = await DDragonService.getAllSummonerSpells();
+    return _list[spellId];
   }
 
   /// Gets the match history of the given user

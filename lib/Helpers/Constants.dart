@@ -7,6 +7,7 @@ class Constants {
   static const String ddragonURLPatch = "https://ddragon.leagueoflegends.com" + patch;
   static const String ddragonURL = "ddragon.leagueoflegends.com/cdn/";//"http://ddragon.leagueoflegends.com/cdn/";
   static const String rawDDragonAssetsURL = "https://raw.communitydragon.org/latest/game/assets/";//"https://raw.communitydragon.org/latest/game/assets/";
-  static const String patch = "/cdn/11.5.1/";
+  static const String patch = "/cdn/11.6.1/";
+  static const String rawDDragonPluginsURL = "https://raw.communitydragon.org/latest/plugins/";
 
 }

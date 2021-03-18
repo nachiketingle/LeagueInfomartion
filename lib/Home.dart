@@ -45,6 +45,7 @@ class _HomeState extends State<Home> {
 
     // Initializes the list
     DDragonService.getAllChampions();
+    DDragonService.getAllSummonerSpells();
   }
 
   @override
