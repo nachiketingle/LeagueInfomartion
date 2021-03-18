@@ -93,32 +93,35 @@ class _SummonerListState extends State<SummonerList> {
     return SizeTransition(
       key: ValueKey<int>(index),
       sizeFactor: animation,
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.1,
-        child: GestureDetector(
-          onTap: () {
-            setState(() {
-              _updateSelectedSummoner(summoner);
-            });
-          },
-          child: Dismissible(
-            key: UniqueKey(),
-            onDismissed: (direction) {
-              _summonerList.remove(summoner.puuid);
-              if(summoner.isSelected) {
-                _updateSelectedSummoner(null);
-              }
-
-              _animatedListKey.currentState!.removeItem(index, (context, animation) {
-                return PlaceholderCard(height: MediaQuery.of(context).size.height * 0.1, animation: animation,);
-              },
-              duration: Duration(milliseconds: 250));
-
-              DeviceInfo.loadSharedPreferences().then((value) {
-                value.setStringList('puuid', _summonerList.keys.toList());
+      child: Center(
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.9,
+          height: MediaQuery.of(context).size.height * 0.1,
+          child: GestureDetector(
+            onTap: () {
+              setState(() {
+                _updateSelectedSummoner(summoner);
               });
             },
-            child: SummonerCard(color: color, summoner: summoner),
+            child: Dismissible(
+              key: UniqueKey(),
+              onDismissed: (direction) {
+                _summonerList.remove(summoner.puuid);
+                if(summoner.isSelected) {
+                  _updateSelectedSummoner(null);
+                }
+
+                _animatedListKey.currentState!.removeItem(index, (context, animation) {
+                  return PlaceholderCard(height: MediaQuery.of(context).size.height * 0.1, animation: animation,);
+                },
+                duration: Duration(milliseconds: 250));
+
+                DeviceInfo.loadSharedPreferences().then((value) {
+                  value.setStringList('puuid', _summonerList.keys.toList());
+                });
+              },
+              child: SummonerCard(color: color, summoner: summoner),
+            ),
           ),
         ),
       ),
@@ -216,12 +219,12 @@ class _SummonerListState extends State<SummonerList> {
   @override
   Widget build(BuildContext context) {
 
-    return Padding(
-      padding: EdgeInsets.fromLTRB(_sidePadding, 20, _sidePadding, 0),
-      child: Center(
-          child: Column(
-            children: [
-              Row(
+    return Center(
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(_sidePadding, 20, _sidePadding, 0),
+              child: Row(
                 children: [
                   _searchIcon(context),
                   Expanded(
@@ -243,27 +246,27 @@ class _SummonerListState extends State<SummonerList> {
                   ),
                 ],
               ),
-              SizedBox.fromSize(
-                size: Size.fromHeight(10),
+            ),
+            SizedBox.fromSize(
+              size: Size.fromHeight(10),
+            ),
+            Expanded(
+              child: AnimatedList(
+                key: _animatedListKey,
+                initialItemCount: _summonerList.keys.length,
+                physics: AlwaysScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemBuilder: (context, index, animation) {
+                  List<String> _keys = _getSortedKeys();
+                  String key = _keys[index];
+                  Summoner currSummoner = _summonerList[key]!;
+                  Color color = currSummoner.isSelected ? Colors.green : Colors.red;
+                  return _cardBuilder(currSummoner, color, index, context, animation);
+                },
               ),
-              Expanded(
-                child: AnimatedList(
-                  key: _animatedListKey,
-                  initialItemCount: _summonerList.keys.length,
-                  physics: AlwaysScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index, animation) {
-                    List<String> _keys = _getSortedKeys();
-                    String key = _keys[index];
-                    Summoner currSummoner = _summonerList[key]!;
-                    Color color = currSummoner.isSelected ? Colors.green : Colors.red;
-                    return _cardBuilder(currSummoner, color, index, context, animation);
-                  },
-                ),
-              ),
-            ],
-          )
-      ),
+            ),
+          ],
+        )
     );
   }
 }
