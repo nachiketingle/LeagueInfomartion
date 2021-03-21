@@ -3,7 +3,7 @@ import 'package:lolinfo/Networking/DDragonService.dart';
 import 'package:lolinfo/Pages/AllPages.dart';
 import 'dart:core';
 
-import 'package:lolinfo/Pages/Settings.dart';
+import 'package:lolinfo/Pages/StatsPage.dart';
 
 class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
@@ -19,7 +19,7 @@ class _HomeState extends State<Home> {
     SummonerInfo(),
     MatchHistory(),
     LiveMatchPage(),
-    SettingsPage(),
+    StatsPage(),
   ];
 
   void _onTappedItem(int index) {
@@ -102,8 +102,8 @@ class _HomeState extends State<Home> {
               label: "Live Match"
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: "Settings"
+              icon: Icon(Icons.info_sharp),
+              label: "Stats"
           ),
         ],
       ),

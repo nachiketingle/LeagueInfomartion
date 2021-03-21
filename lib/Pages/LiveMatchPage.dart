@@ -29,6 +29,7 @@ class _LiveMatchPageState extends State<LiveMatchPage> {
             if(snapshot.hasData) {
               LiveMatch match = snapshot.data as LiveMatch;
               return ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
                 itemCount: match.blueSide.length,
                 itemBuilder: (context, index) {
                   return LaneMatchup(
@@ -100,6 +101,19 @@ class Side extends StatelessWidget {
   final bool isBlue;
 
   Widget build(BuildContext context) {
+
+    List<Widget> order = [
+      DDragonService.getChampIcon(participant.champion.name!, imageHeight: 75),
+      SizedBox(width: 10,),
+      Column(
+        children: [
+          DDragonService.getSpellIcon(participant.spell1, imageHeight: 30),
+          SizedBox(height: 10,),
+          DDragonService.getSpellIcon(participant.spell2, imageHeight: 30),
+        ],
+      ),
+    ];
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -110,7 +124,9 @@ class Side extends StatelessWidget {
             participant.summonerName,
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
           ),
-          DDragonService.getChampIcon(participant.champion.name!, imageHeight: 75)
+          Row(
+            children: isBlue ? order : order.reversed.toList(),
+          )
         ],
       ),
     );

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:lolinfo/Helpers/AppThemes.dart';
-import 'package:lolinfo/Models/Champion.dart';
 import 'package:lolinfo/Models/ChampionMastery.dart';
 import 'package:lolinfo/Networking/DDragonService.dart';
 import 'package:lolinfo/Networking/RiotService.dart';
@@ -133,7 +132,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
     super.initState();
     champMap = widget.champMap;
     _keys = champMap.keys.toList();
-    _sortNames();
+    _sortPoints();
   }
 
   void _sortNames() {
